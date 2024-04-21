@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tasktimer</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/reset.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script defer src="/js/main.js"></script>
+    <script defer src="/js/column.js"></script>
+    <script defer src="/js/create-board.js"></script>
+    <script defer src="/js/board.js"></script>
+    <script defer src="/js/logout.js"></script>
+    <script defer src="/js/card.js"></script>
+    <script defer src="/js/create-board.js"></script>
+    <script defer src="/js/profile.js"></script>
+    <script defer src="/js/invite.js"></script>
+    <script defer src="/js/card-member.js"></script>
+  </head>
+  <body class="menu-active">
+    <!-- 모달 : 보드 생성 -->
+    <div
+      class="modal fade"
+      id="createBoard"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">보드 추가하기</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="board-name" class="form-label">보드 이름</label>
+              <input
+                type="text"
+                class="form-control"
+                id="board-name"
+                placeholder="보드 이름"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="board-introduction" class="form-label"
+                >보드 설명</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="board-introduction"
+                placeholder="보드 설명"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="board-color" class="form-label"
+                >배경색으로 지정할 컬러값을 입력해주세요. (ex.#000000)</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="board-color"
+                placeholder="#fffff"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
+            <button
+              type="button"
+              id="btnInvite"
+              class="btn btn-primary"
+              onclick="createBoard()"
+            >
+              생성하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 모달 : 보드 수정 -->
+    <div
+      class="modal fade"
+      id="editBoard"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">보드 수정하기</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="editBoardName" class="form-label">보드 이름</label>
+              <input
+                type="text"
+                class="form-control"
+                id="editBoardName"
+                placeholder="보드 이름"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="editBoardIntroduction" class="form-label"
+                >보드 설명</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="editBoardIntroduction"
+                placeholder="보드 설명"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="editBoardColor" class="form-label"
+                >배경색으로 지정할 컬러값을 입력해주세요. (ex.#000000)</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="editBoardColor"
+                placeholder="#fffff"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
+            <button
+              type="button"
+              id="btnEditBoardComplete"
+              class="btn btn-primary"
+              onclick="updateBoard()"
+            >
+              수정하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 모달 : 유저 초대 -->
+    <div
+      class="modal fade"
+      id="inviteUser"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">
+              보드에 유저 초대하기
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="inviteUserId" class="form-label"
+                >초대할 유저의 아이디를 입력해주세요.</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="inviteUserId"
+                placeholder="id"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
+            <button type="button" id="userInviteBtn" class="btn btn-primary">
+              초대하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 모달 : 내정보 변경 -->
+    <div
+      class="modal fade"
+      id="editUser"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">
+              내 정보 변경하기
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"
+                >아이디</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="exampleFormControlInput1"
+                value="유저 아이디값 넣어주세요(고정값임)"
+                readonly
+              />
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"
+                >비밀번호</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="비밀번호"
+              />
+            </div> -->
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"
+                >닉네임</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="nickname-update"
+                placeholder="닉네임"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="user-delete-btn" class="btn btn-danger">
+              회원탈퇴
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
+            <button
+              type="button"
+              id="nickname-save-btn"
+              class="btn btn-primary"
+            >
+              변경하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 모달 : 카드 생성 -->
+    <div
+      class="modal fade"
+      id="createCard"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">컬럼 생성하기</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="card-name" class="form-label">컬럼 이름</label>
+              <input
+                type="text"
+                class="form-control"
+                id="card-name"
+                placeholder="컬럼 이름"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="card-description" class="form-label">컬럼 내용</label>
+              <input
+                type="text"
+                class="form-control"
+                id="card-description"
+                placeholder="컬럼 내용"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="date" class="form-label">마감일</label>
+              <div>
+                <input type="datetime-local" id="date" class="deadline" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
+            <button
+              type="button"
+              id="btnInvite"
+              class="btn btn-primary create-card-btn"
+            >
+              생성하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 모달 : 카드 상세 -->
+    <div
+      class="modal fade"
+      id="cardDetail"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">
+              카드 정보</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!--
+            카드 정보 -->
+            <div class="content-inner flex-wrap-j">
+              <h6 class="content-title card-name">
+
+              </h6>
+            </div>
+            <!-- 설명 -->
+            <div class="content-inner">
+              <p class="card-description">
+              </p>
+            </div>
+            <div id="btnComplete">
+              <button type="button" class="btn btn-success">
+                     완료하기
+               </button>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              닫기
+            </button>
+            <!--<button type="button" class="btn btn-success">
+              완료하기
+            </button>
+            -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 모달 카드 추가 -->
+    <div
+      class="modal fade"
+      id="addCol"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">카드 추가하기</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="colName" class="form-label">카드 이름</label>
+              <input
+                type="colName"
+                class="form-control"
+                id="colName"
+                placeholder="카드 이름"
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                닫기
+              </button>
+              <button type="button" id="btnAddCol" class="btn btn-primary">
+                추가하기
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-wrapper">
+      <!-- 사이드바 -->
+      <div id="sidebar-wrapper">
+        <div class="btn-right">
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#createBoard"
+          >
+            보드 +
+          </button>
+        </div>
+        <ul class="sidebar-nav" id="boardList"></ul>
+      </div>
+      <!-- /사이드바 -->
+
+      <!-- 본문 -->
+      <div id="page-content-wrapper">
+        <div class="content-header">
+          <div class="flex-wrap">
+            <h1></h1>
+            <div class="btn-wrap bottom">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#editBoard"
+              >
+                보드 수정
+              </button>
+              <button
+                type="button"
+                id="btnDeleteBoard"
+                class="btn btn-outline-danger btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteBoard"
+              >
+                보드 삭제
+              </button>
+            </div>
+          </div>
+          <div class="flex-wrap gap-10">
+            <button type="button" class="btn btn-primary" id="logout">
+              로그아웃
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#inviteUser"
+            >
+              유저 초대
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#editUser"
+              id="profile-update"
+            >
+              내 정보 변경
+            </button>
+          </div>
+        </div>
+        <div class="container-fluid">
+          <div class="content-wrap">
+            <div class="btn-wrap btn-right mb-3 justify-content-between">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#addCol"
+              >
+                카드 추가하기
+              </button>
+            </div>
+            <ul class="column-list"></ul>
+          </div>
+        </div>
+      </div>
+      <!-- /본문 -->
+    </div>
+  </body>
+</html>
